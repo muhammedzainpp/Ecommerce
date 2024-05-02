@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Folder Include="ProductTypes\Quries\" />
+    <Folder Include="ProductVariants\Queries\" />
   </ItemGroup>
 
 </Project>

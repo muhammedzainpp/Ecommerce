@@ -7,4 +7,13 @@ public class ProductVariant : EntityBase
     public int ProductId { get; private set; }
     public ProductType ProductType { get; private set; } = default!;
     public int ProductTypeId { get;private set; }
+
+
+    public static ProductVariant Create(int productId , int productTypeId) => new ProductVariant
+    {
+       ProductId = productId ,
+       ProductTypeId = productTypeId
+    };
 }
+
+
