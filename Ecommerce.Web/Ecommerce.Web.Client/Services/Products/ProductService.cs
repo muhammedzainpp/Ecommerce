@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Web.Client.Services.Products.Dtos;
+using System.Collections;
 
 namespace Ecommerce.Web.Client.Services.Products;
 
@@ -21,12 +22,22 @@ public class ProductService(IApiService apiservice) : IProductService
         return response.Result ?? default!;
     }
 
-    public async Task GetProductsByCategory(int categoryId)
+    public async Task<IEnumerable<ProductDto>> GetProductsByCategory(int categoryId)
     {
-        var response = await _apiservice.GetByAnyValue<IEnumerable<ProductDto>>($"{_baseUrl}/GetByCategory/{categoryId}");
+        var response = await _apiservice.GetById<IEnumerable<ProductDto>>($"{_baseUrl}/GetByCategory",categoryId);
         if (response != null && response.Result != null)
-            Products = response.Result;
-      
+            return response.Result;
+        else
+            throw new Exception();       
+    }
+
+    public async Task<IEnumerable<OutProductDto>> GetOutProductsByBaseProduct(int productId)
+    {
+        var response = await _apiservice.GetById<IEnumerable<OutProductDto>>($"{_baseUrl}/GetOutProducts", productId);
+        if (response != null && response.Result != null)
+            return response.Result;
+        else
+            throw new Exception();
     }
 
 

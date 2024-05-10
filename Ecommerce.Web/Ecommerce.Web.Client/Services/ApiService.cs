@@ -13,6 +13,7 @@ public class ApiService(HttpClient http) : IApiService
             return response;
     }
 
+
     public async Task<Response<T>> GetById<T>(string url,int id)
     {
         var response = await http.GetFromJsonAsync<Response<T>>($"{url}/{id}") ?? default!;
@@ -25,9 +26,4 @@ public class ApiService(HttpClient http) : IApiService
         return await response.Content.ReadFromJsonAsync<Response<int>>() ?? default!;
     }
 
-    public async Task<Response<T>> GetByAnyValue<T>(string request)
-    {
-        var response = await http.GetFromJsonAsync<Response<T>>(request) ?? default!;
-        return response;
-    }
 }

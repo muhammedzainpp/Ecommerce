@@ -3,15 +3,15 @@ using Ecommerce.Web.Domain.Entities;
 using Ecommerce.Web.Domain.Entities.Base;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace Ecommerce.Web.Data;
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
                     : IdentityDbContext<ApplicationUser>(options), IAppDbContext
 {
-    public DbSet<Product> Products { get; set; }
-    public DbSet<Category> Categories { get; set; }
-    public DbSet<ProductType> ProductTypes { get; set; }
-    public DbSet<ProductVariant> ProductVariants { get; set; }
+    public DbSet<Product> Products { get;set;}
+    public DbSet<Category> Categories { get;set;}
+    public DbSet<OutProduct> OutProducts { get; set; }
 
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -31,6 +31,5 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             }
         }
         return await base.SaveChangesAsync(cancellationToken);
-
     }
 }

@@ -39,11 +39,13 @@ public class GetCategoriesQueryHandler(IAppDbContext context) : IQueryHandler<Ge
     {
         return await _context
                      .Categories
+                     .Where(x=>x.ParentCategoryId == null)
                      .Select(x => new CategoryDto
                       {
                         Id = x.Id,
                         Name = x.Name,
-                        Url = x.Url,
+                        ParentCategoryId = x.ParentCategoryId,
+                        ImageUrl = x.ImageUrl
                       })
                      .ToListAsync();
     }

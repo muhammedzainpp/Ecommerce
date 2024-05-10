@@ -8,10 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\Modal.js" />
     <Content Remove="wwwroot\js\openclose.js" />
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\Modal.js" />
     <_ContentIncludedByDefault Remove="wwwroot\js\openclose.js" />
   </ItemGroup>
 
@@ -26,12 +28,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\categorycss\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\img\" />
     <Folder Include="wwwroot\lib\" />
+    <Folder Include="wwwroot\webfonts\" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\js\Modal.js" />
     <None Include="wwwroot\js\openclose.js" />
   </ItemGroup>
 

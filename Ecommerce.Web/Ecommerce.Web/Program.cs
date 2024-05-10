@@ -7,12 +7,13 @@ using Ecommerce.Web.Client.Services.Products;
 using Ecommerce.Web.Client.Services;
 using Ecommerce.Web.Components;
 using Ecommerce.Web.Components.Account;
-using Ecommerce.Web.Data;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Net.NetworkInformation;
 using Ecommerce.Web.Client.Services.Categories;
+using Ecommerce.Web.Data;
+
 
 namespace Ecommerce.Web;
 public class Program

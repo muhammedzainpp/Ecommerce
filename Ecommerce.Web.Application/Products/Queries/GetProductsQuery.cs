@@ -1,4 +1,5 @@
-﻿using Ecommerce.Web.Application.Common.Interfaces.Mediatr;
+﻿using Ecommerce.Web.Application.Categories.Extenions;
+using Ecommerce.Web.Application.Common.Interfaces.Mediatr;
 using Ecommerce.Web.Application.Interfaces;
 using Ecommerce.Web.Application.Products.Dtos;
 using Ecommerce.Web.Shared.Reponses;
@@ -40,14 +41,13 @@ public class GetProductsQueryHandler(IAppDbContext context) : IQueryHandler<GetP
     {
         return await  _context
                .Products
+               .Include(x=>x.Category)
                .Select(x=>new ProductDto
         {
                Id= x.Id,
-               Title = x.Title,
+               Name = x.Name,
                Description = x.Description,
-               Price = x.Price,
-               CategoryId = x.CategoryId,
-               ImageUrl = x.ImageUrl
+               Category = x.Category.ToCategoryDto(),
         }).ToListAsync();
     }
 }

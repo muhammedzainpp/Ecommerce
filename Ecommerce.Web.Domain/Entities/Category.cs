@@ -4,10 +4,14 @@ namespace Ecommerce.Web.Domain.Entities;
 public class Category : EntityBase
 {
     public string Name { get; private set; } = default!;
-    public string Url { get; private set; } = default!;
-    public static Category Create(string name, string url) => new Category
+    public Category? ParentCategory { get; set; }
+    public int? ParentCategoryId { get; set; }
+    public string ImageUrl { get;private set; } = default!;
+    public List<Product> Products { get; set; } = default!;
+    public static Category Create(int? parentCategoryId,string name,string imageUrl) => new Category
     {
         Name = name,
-        Url = url
+        ParentCategoryId = parentCategoryId,
+        ImageUrl = imageUrl
     };
 }

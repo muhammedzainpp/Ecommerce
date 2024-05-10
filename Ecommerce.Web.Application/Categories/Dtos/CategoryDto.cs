@@ -1,7 +1,10 @@
-﻿namespace Ecommerce.Web.Application.Categories.Dtos;
+﻿using Ecommerce.Web.Application.Products.Dtos;
+
+namespace Ecommerce.Web.Application.Categories.Dtos;
 public class CategoryDto
 {
-    public int Id { get; set; }
-    public string Name { get;  set; } = default!;
-    public string Url { get;  set; } = default!;
+    public required int Id { get; set; }
+    public required string Name { get;  set; } = default!;
+    public required string ImageUrl { get; set; }
+    public  int? ParentCategoryId { get; set; }
 }

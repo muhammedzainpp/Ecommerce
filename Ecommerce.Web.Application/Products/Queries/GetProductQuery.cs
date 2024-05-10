@@ -1,4 +1,5 @@
-﻿using Ecommerce.Web.Application.Common.Interfaces.Mediatr;
+﻿using Ecommerce.Web.Application.Categories.Extenions;
+using Ecommerce.Web.Application.Common.Interfaces.Mediatr;
 using Ecommerce.Web.Application.Interfaces;
 using Ecommerce.Web.Application.Products.Dtos;
 using Ecommerce.Web.Shared.Reponses;
@@ -39,14 +40,13 @@ public class GetProductQueryHandler(IAppDbContext context) : IQueryHandler<GetPr
     private async Task<ProductDto> GetProductAsync(GetProductQuery request)
     {
         return await _context.Products.Where(x => x.Id == request.Id)
+            .Include(x=>x.Category)
             .Select(x => new ProductDto()
             {
                 Id = x.Id,
-                Title=x.Title,
+                Name = x.Name,
                 Description=x.Description,
-                ImageUrl = x.ImageUrl,
-                Price = x.Price,
-                CategoryId = x.CategoryId
+                Category = x.Category.ToCategoryDto(),
             })
             .FirstOrDefaultAsync() ?? throw new Exception("product not found");
 

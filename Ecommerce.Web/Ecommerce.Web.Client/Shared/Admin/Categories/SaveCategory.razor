@@ -1,0 +1,63 @@
+﻿@page "/savecategory"
+
+
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:400,700" />
+
+<link rel="stylesheet" href="categorycss/fontawesome.minold.css" />
+
+<link rel="stylesheet" href="categorycss/bootstrap.minold.css" />
+
+<link rel="stylesheet" href="categorycss/templatemo-style.css">
+
+ <div class="container tm-mt-big tm-mb-big">
+      <div class="row">
+        <div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 mx-auto">
+          <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+            <div class="row">
+              <div style="margin-left:300px" class="col-12">
+                <h2 class="tm-block-title d-inline-block">Add Product</h2>
+              </div>
+            </div>
+            <div class="row tm-edit-product-row">
+            <EditForm method="post" Model="Category" FormName="create" class="tm-edit-product-form" OnValidSubmit="SaveMainCategory">
+              <div class="col-xl-6 col-lg-6 col-md-12">
+                     <div class="form-group mb-3">
+                    <label style="margin-left:190px" for="name">Category Name </label>
+                    <InputText @bind-Value="Category.Name" style="margin-left:190px"  type="text" class="form-control"  />
+                  </div>  
+              </div>
+
+               <div class="col-xl-6 col-lg-6 col-md-12">
+                           <div class="form-group mb-3">
+                                <label style="margin-left:190px" for="text">ImageUrl </label>
+                                <InputText @bind-Value="Category.ImageUrl" style="margin-left:190px"   type="text" class="form-control" />
+                            </div>
+                </div>
+
+            @*   <div class="col-xl-6 col-lg-6 col-md-12 mx-auto mb-4">
+                <div class="tm-product-img-dummy mx-auto">
+                  <i
+                    class="fas fa-cloud-upload-alt tm-upload-icon"
+                    onclick="document.getElementById('fileInput').click();"
+                  ></i>
+                </div>
+                <div class="custom-file mt-3 mb-3">
+                  <input id="fileInput" type="file" style="display:none;" />
+                  <input
+                    type="button"
+                    class="btn btn-primary btn-block mx-auto"
+                    value="UPLOAD PRODUCT IMAGE"
+                    onclick="document.getElementById('fileInput').click();"
+                  />
+                </div>
+              </div> *@
+                        <div style="margin-left:191px;width:375px" class="col-12">
+                <button type="submit" class="btn btn-primary btn-block text-uppercase">Add Product Now</button>
+              </div>
+            </EditForm>
+            </div>
+          </div>
+        </div>
+      </div>
+   </div>

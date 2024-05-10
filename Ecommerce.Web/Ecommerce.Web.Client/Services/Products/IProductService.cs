@@ -6,8 +6,9 @@ public interface IProductService
 {
     IEnumerable<ProductDto> Products { get; set; }
 
-
+    Task<IEnumerable<OutProductDto>> GetOutProductsByBaseProduct(int productId);
     Task<ProductDto> GetProduct(int id);
     Task GetProducts();
-    Task GetProductsByCategory(int categoryId);
+    Task<IEnumerable<ProductDto>> GetProductsByCategory(int categoryId);
+    //Task GetProductsByCategory(int categoryId);
 }

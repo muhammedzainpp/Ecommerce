@@ -17,4 +17,8 @@
     <ProjectReference Include="..\..\Ecommerce.Web.Shared\Ecommerce.Web.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Shared\Admin\Categories\css\" />
+  </ItemGroup>
+
 </Project>

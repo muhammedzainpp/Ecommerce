@@ -9,8 +9,10 @@ using static Ecommerce.Web.Application.Common.Helpers.ResponseHelpers;
 namespace Ecommerce.Web.Application.Categories.Commands;
 public class SaveCategoryCommand : ICommand<int> 
 {
+    public int Id { get; set; }
     public required string Name { get; set; }
-    public required string Url { get; set; }
+    public int? ParentCategoryId { get; set; }
+    public required string ImageUrl { get; set; }
 }
 
 public class SaveCategoryCommandHandler(IAppDbContext context) : ICommandHandler<SaveCategoryCommand, int>
@@ -39,15 +41,13 @@ public class SaveCategoryCommandHandler(IAppDbContext context) : ICommandHandler
     {
 
         Category category;
-
-        category = Category.Create
-
-        (request.Name, request.Url);
+     
+        category =request.ParentCategoryId is  null 
+                  ? Category.Create(null,request.Name,request.ImageUrl)
+                  :Category.Create(request.ParentCategoryId,request.Name,request.ImageUrl);
 
         await _context.Categories.AddAsync(category);
-
         await _context.SaveChangesAsync();
-
         return category.Id;
     }
 }
