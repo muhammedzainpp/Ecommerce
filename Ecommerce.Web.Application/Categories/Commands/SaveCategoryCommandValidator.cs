@@ -9,7 +9,8 @@ public class SaveCategoryCommandValidator : AbstractValidator<SaveCategoryComman
     public SaveCategoryCommandValidator(IAppDbContext context)
     {
         _context = context;
-        RuleFor(x => x.Name).NotEmpty().WithMessage("Category Already Exists").Must(CategoryExist);
+        RuleFor(x => x.Name).NotEmpty().Must(CategoryExist).WithMessage("Category Alredy Exists");
+        
     }
 
     private bool CategoryExist(string name)

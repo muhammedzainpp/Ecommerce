@@ -1,6 +1,7 @@
 ﻿using Ecommerce.Web.Application.Categories.Dtos;
 using Ecommerce.Web.Application.Common.Interfaces.Mediatr;
 using Ecommerce.Web.Application.Interfaces;
+using Ecommerce.Web.Domain.Exceptions.Categories;
 using Ecommerce.Web.Shared.Reponses;
 using Microsoft.EntityFrameworkCore;
 using static Ecommerce.Web.Application.Common.Helpers.ResponseHelpers;
@@ -47,6 +48,6 @@ public class GetCategoriesQueryHandler(IAppDbContext context) : IQueryHandler<Ge
                         ParentCategoryId = x.ParentCategoryId,
                         ImageUrl = x.ImageUrl
                       })
-                     .ToListAsync();
+                     .ToListAsync() ?? throw new CategoryNotFoundException();
     }
 }

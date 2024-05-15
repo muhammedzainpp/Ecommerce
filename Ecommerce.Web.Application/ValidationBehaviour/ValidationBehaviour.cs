@@ -1,4 +1,6 @@
-﻿using FluentValidation;
+﻿using Ecommerce.Web.Application.Common.Interfaces.Mediatr;
+using Ecommerce.Web.Shared.Reponses;
+using FluentValidation;
 using MediatR;
 
 
@@ -22,11 +24,9 @@ public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TReque
                 .Where(f => f != null)
                 .ToList();
             if (failures.Count != 0)
-
                 throw new ValidationException(failures);
         }
         return await next();
     }
 }
-
 

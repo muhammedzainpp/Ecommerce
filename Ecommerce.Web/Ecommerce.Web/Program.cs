@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Net.NetworkInformation;
 using Ecommerce.Web.Client.Services.Categories;
 using Ecommerce.Web.Data;
+using Ecommerce.Web.Exceptions;
 
 
 namespace Ecommerce.Web;
@@ -36,6 +37,7 @@ public class Program
         builder.Services.AddScoped<IApiService, ApiService>();
         builder.Services.AddScoped<IProductService, ProductService>();
         builder.Services.AddScoped<ICategoryService, CategoryService>();
+
         builder.Services.AddAuthentication(options =>
             {
                 options.DefaultScheme = IdentityConstants.ApplicationScheme;
@@ -79,6 +81,7 @@ public class Program
             .AddInteractiveServerRenderMode()
             .AddInteractiveWebAssemblyRenderMode()
             .AddAdditionalAssemblies(typeof(Ecommerce.Web.Client._Imports).Assembly);
+        app.UseMiddleware(typeof(ErrorHandlingMiddleware));
         var apiGroup = app.MapGroup("/api");
         EndPoints.MapEndPoints(apiGroup);
 

@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Web.Client.Services.Categories.Dtos;
+using Ecommerce.Web.Shared.Reponses;
 
 namespace Ecommerce.Web.Client.Services.Categories;
 public class CategoryService(IApiService apiService) : ICategoryService
@@ -22,8 +23,9 @@ public class CategoryService(IApiService apiService) : ICategoryService
         else
             throw new Exception();      
     }
-    public async Task SaveMainCategory(CategoryDto request)
+    public async Task<Response<int>> SaveMainCategory(CategoryDto request)
     {
         var response = await _apiservice.Post<CategoryDto>(_baseUrl, request);
+        return response;
     }
 }

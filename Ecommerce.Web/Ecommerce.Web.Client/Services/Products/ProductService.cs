@@ -40,5 +40,14 @@ public class ProductService(IApiService apiservice) : IProductService
             throw new Exception();
     }
 
+    public async Task<int> SaveProduct(ProductDto product)
+    {
+        var response = await _apiservice.Post($"{_baseUrl}", product);
+        if (response != null )
+            return response.Result;
+        else
+            throw new Exception();
+    }
+
 
 }
