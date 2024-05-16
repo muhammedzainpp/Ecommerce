@@ -8,10 +8,13 @@ namespace Ecommerce.Web.Client.Shared.Admin.Products;
 
 public partial class SaveProduct
 {
+
     [Inject]
     public ICategoryService CategoryService { get; set; } = default!;
     [Inject]
     public IProductService ProductService { get; set; } = default!;
+
+    public int CategoryId { get; set; }
 
     [SupplyParameterFromForm]
     public ProductDto Product { get; set; } = new ProductDto();
