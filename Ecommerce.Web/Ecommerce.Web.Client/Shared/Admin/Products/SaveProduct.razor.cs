@@ -8,27 +8,29 @@ namespace Ecommerce.Web.Client.Shared.Admin.Products;
 
 public partial class SaveProduct
 {
+    public int CategoryId { get; set; }
 
     [Inject]
     public ICategoryService CategoryService { get; set; } = default!;
     [Inject]
     public IProductService ProductService { get; set; } = default!;
 
-    public int CategoryId { get; set; }
-
     [SupplyParameterFromForm]
-    public ProductDto Product { get; set; } = new ProductDto();
-    public IEnumerable<CategoryDto> SubCategories { get; set; } = new List<CategoryDto>();
+    public ProductDto Product { get; set; } = new();
+    public List<CategoryDto> SubCategories { get; set; } = new();
     protected override async Task OnInitializedAsync()
     {
         await CategoryService.GetCategories();
     }
-    public async void GetSubCategories(int parentcategoryId)
+    public async Task GetSubCategories()
     {
-        SubCategories = await CategoryService.GetSubCategories(parentcategoryId);
+
+        SubCategories = (await CategoryService.GetSubCategories(CategoryId))
+            .ToList();
+        StateHasChanged();
     }
-    public async Task SaveProductAsync()
-    {
+    public async void SaveProductAsync()
+    {       
         await ProductService.SaveProduct(Product);
     }
 }
