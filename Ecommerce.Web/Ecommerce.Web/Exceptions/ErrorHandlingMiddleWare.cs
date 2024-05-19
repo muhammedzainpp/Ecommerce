@@ -1,5 +1,4 @@
-﻿using Ecommerce.Web.Shared.Reponses;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace Ecommerce.Web.Exceptions;
 
