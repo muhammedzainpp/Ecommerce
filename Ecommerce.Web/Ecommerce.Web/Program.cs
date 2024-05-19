@@ -14,6 +14,7 @@ using System.Net.NetworkInformation;
 using Ecommerce.Web.Client.Services.Categories;
 using Ecommerce.Web.Data;
 using Ecommerce.Web.Exceptions;
+using Blazored.Toast;
 
 
 namespace Ecommerce.Web;
@@ -37,6 +38,7 @@ public class Program
         builder.Services.AddScoped<IApiService, ApiService>();
         builder.Services.AddScoped<IProductService, ProductService>();
         builder.Services.AddScoped<ICategoryService, CategoryService>();
+        builder.Services.AddBlazoredToast();
 
         builder.Services.AddAuthentication(options =>
             {
