@@ -1,3 +1,4 @@
+using Blazored.Toast;
 using Ecommerce.Web.Client;
 using Ecommerce.Web.Client.Services;
 using Ecommerce.Web.Client.Services.Categories;
@@ -13,7 +14,7 @@ builder.Services.AddSingleton<AuthenticationStateProvider, PersistentAuthenticat
 builder.Services.AddScoped<IApiService,ApiService>();
 builder.Services.AddScoped<IProductService,ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-
+builder.Services.AddBlazoredToast();
 
 
 await builder.Build().RunAsync();
