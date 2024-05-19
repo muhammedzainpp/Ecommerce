@@ -1,7 +1,6 @@
 ﻿@page "/savecategory"
 @rendermode InteractiveAuto
 
-
 <link rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Roboto:400,700" />
 
@@ -11,9 +10,10 @@
 
 <link rel="stylesheet" href="admincss/templatemo-style.css">
 
+<BlazoredToasts/>
  <div class="container tm-mt-big tm-mb-big">
       <div class="row">
-        <div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 mx-auto">
+        <div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 mx-auto" style="line-height:3px">
           <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
             <div class="row">
               <div style="margin-left:300px" class="col-12">
@@ -25,14 +25,14 @@
               <div class="col-xl-6 col-lg-6 col-md-12">
                      <div class="form-group mb-3">
                     <label style="margin-left:190px" for="name">Category Name </label>
-                    <InputText @bind-Value="Category.Name" style="margin-left:190px"  type="text" class="form-control"  />
+                    <InputText @bind-Value="Category.Name" style="margin-left:190px;height:1px"  type="text" class="form-control"  />
                   </div>  
               </div>
 
                <div class="col-xl-6 col-lg-6 col-md-12">
                            <div class="form-group mb-3">
                                 <label style="margin-left:190px" for="text">ImageUrl </label>
-                                <InputText @bind-Value="Category.ImageUrl" style="margin-left:190px"   type="text" class="form-control" />
+                                <InputText @bind-Value="Category.ImageUrl" style="margin-left:190px;height:1px" type="text" class="form-control" />
                             </div>
                 </div>
 
