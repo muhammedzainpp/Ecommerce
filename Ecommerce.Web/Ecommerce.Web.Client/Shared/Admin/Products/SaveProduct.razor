@@ -1,5 +1,5 @@
 ﻿@page "/saveproduct"
-@rendermode InteractiveWebAssembly
+@rendermode InteractiveAuto
 
 
 <link rel="stylesheet"
@@ -20,40 +20,57 @@
                         <h2 class="tm-block-title d-inline-block">Add Product</h2>
                     </div>
                 </div>
-                <div class="row tm-edit-product-row">
+                <div style="line-height:1px" class="row tm-edit-product-row">
                     <EditForm method="post" Model="Product" FormName="create" class="tm-edit-product-form" OnValidSubmit="SaveProductAsync">
-
                         <div class="col-xl-6 col-lg-6 col-md-12">
                             <div class="form-group mb-3">
                                 <label style="margin-left:190px" for="name">Product Name </label>
-                                <InputText @bind-Value="Product.Name" style="margin-left:190px" type="text" class="form-control" />
+                                <InputText @bind-Value="Product.Name" style="margin-left:190px;height:1px" type="text" class="form-control" />
                             </div>
                         </div>
                         <div class="col-xl-6 col-lg-6 col-md-12">
                             <div class="form-group mb-3">
                                 <label style="margin-left:190px" for="name">Description </label>
-                                <InputText @bind-Value="Product.Description" style="margin-left:190px" type="text" class="form-control" />
+                                <InputText @bind-Value="Product.Description" style="margin-left:190px;height:1px" type="text" class="form-control" />
                             </div>
                         </div>
-
                         <div class="col-xl-6 col-lg-6 col-md-12">
                             <div class="form-group mb-3">
                                 <label style="margin-left:190px" for="text">ImageUrl </label>
-                                <InputText @bind-Value="Product.ImageUrl" style="margin-left:190px" type="text" class="form-control" />
+                                <InputText @bind-Value="Product.ImageUrl" style="margin-left:190px;height:1px" type="text" class="form-control" />
                             </div>
                         </div>
-                        <p>Please choose Category:</p>
-                        <span>Category:</span>
-                        <select class="select-element" @bind="CategoryId">
-                            @foreach (var category in CategoryService.Categories)
-                            {
-                                <option value="@category.Id">@category.Name</option>
-                            }
-                        </select>
-
-
-
-
+                        <div class="col-xl-6 col-lg-6 col-md-12" style="color:white;margin-left:190px">
+                            <div class="form-group mb-3">
+                                <p>Please choose Category:</p>
+                                <InputSelect id="category" class="form-control" style="height:auto;padding:5px" 
+                                             Value="CategoryId"
+                                             ValueExpression="@(()=>CategoryId)"
+                                             ValueChanged="@(async(int args) => {CategoryId = args;await GetSubCategories();})">
+                                    <option value="">Select</option>
+                                    @foreach (var category in CategoryService.Categories)
+                                    {
+                                        <option value="@category.Id">
+                                            @category.Name
+                                        </option>
+                                    }
+                                </InputSelect>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-12" style="color:white;margin-left:190px">
+                            <div class="form-group mb-3">
+                                <p>Please choose Sub Category:</p>
+                                <InputSelect id="category" class="form-control" @bind-Value="Product.CategoryId" style="height:auto;padding:5px">
+                                    <option value="">Select</option>
+                                    @foreach (var subcategory in SubCategories)
+                                    {
+                                        <option value="@subcategory.Id">
+                                            @subcategory.Name
+                                        </option>
+                                    }
+                                </InputSelect>
+                            </div>
+                        </div>
                         @*   <div class="col-xl-6 col-lg-6 col-md-12 mx-auto mb-4">
                         <div class="tm-product-img-dummy mx-auto">
                         <i
