@@ -6,6 +6,7 @@ public static class EndPoints
     {
         app.MapProducts();
         app.MapCategories();
+        app.MapUsers();
 
 
     }

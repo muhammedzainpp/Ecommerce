@@ -5,6 +5,8 @@ using Ecommerce.Web.Application.Products.Commands;
 using Ecommerce.Web.Application.Products.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Web.Http;
+using FromBodyAttribute = Microsoft.AspNetCore.Mvc.FromBodyAttribute;
 
 namespace Ecommerce.Web.Apis;
 
@@ -19,8 +21,6 @@ public static class ProductApi
         group.MapGet("/GetByCategory/{id}", GetProductsByCategory);
         group.MapPost("SaveOutProduct",SaveOutProduct);
         group.MapGet("/GetOutProducts/{id}", GetOutProducts);
-
-
     }
     private static async Task<IResult> GetProducts([FromServices] IMediator mediatr)
     {

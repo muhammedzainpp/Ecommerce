@@ -26,4 +26,10 @@ public class ApiService(HttpClient http) : IApiService
         return await response.Content.ReadFromJsonAsync<Response<int>>() ?? default!;
     }
 
+    public async Task<Response<TResponse>> Post<TRequest,TResponse>(string url, TRequest request)
+    {
+        var response = await http.PostAsJsonAsync(url, request) ?? default!;
+        return await response.Content.ReadFromJsonAsync<Response<TResponse>>() ?? default!;
+    }
+
 }

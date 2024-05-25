@@ -8,7 +8,7 @@ public class Product : EntityBase
     public string ImageUrl { get; private set; } = default!;
     public Category Category { get; private set; } = default!;
     public int CategoryId { get;private set; }
-    public List<OutProduct> OutProducts { get; set; } = default!;
+    public List<Item> OutProducts { get; set; } = default!;
     public static Product Create(string name, string description,string imageUrl,int categoryId) => new Product
     {
         Name = name,

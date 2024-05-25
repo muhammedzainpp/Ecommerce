@@ -36,10 +36,10 @@ public class SaveOutProductCommandHandler(IAppDbContext _context) : ICommandHand
 
     private async Task<int> SaveAsync(SaveOutProductCommand request)
     {
-        OutProduct outProduct;
-        outProduct = OutProduct.Create
+        Item outProduct;
+        outProduct = Item.Create
            (request.ProductId, request.Price,request.ImageUrl);
-        await _context.OutProducts.AddAsync(outProduct);
+        await _context.Items.AddAsync(outProduct);
         await _context.SaveChangesAsync();
         return outProduct.Id;
     }

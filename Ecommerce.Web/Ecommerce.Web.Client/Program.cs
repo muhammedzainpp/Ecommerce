@@ -3,6 +3,7 @@ using Ecommerce.Web.Client;
 using Ecommerce.Web.Client.Services;
 using Ecommerce.Web.Client.Services.Categories;
 using Ecommerce.Web.Client.Services.Products;
+using Ecommerce.Web.Client.Services.Users;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -14,7 +15,8 @@ builder.Services.AddSingleton<AuthenticationStateProvider, PersistentAuthenticat
 builder.Services.AddScoped<IApiService,ApiService>();
 builder.Services.AddScoped<IProductService,ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddBlazoredToast();
+builder.Services.AddScoped<IUserService, UserService>();
 
+builder.Services.AddBlazoredToast();
 
 await builder.Build().RunAsync();

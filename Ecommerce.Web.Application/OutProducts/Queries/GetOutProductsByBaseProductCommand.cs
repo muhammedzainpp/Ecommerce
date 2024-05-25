@@ -37,7 +37,7 @@ public class GetOutProductsByBaseProductCommandHandler(IAppDbContext _context) :
     private async Task<IEnumerable<OutProductDto>> GetProductsAsync(GetOutProductsByBaseProductCommand request)
     {
         return await _context
-               .OutProducts
+               .Items
                .Where(x => x.ProductId == request.ProductId)
                .Select(x => new OutProductDto
                {

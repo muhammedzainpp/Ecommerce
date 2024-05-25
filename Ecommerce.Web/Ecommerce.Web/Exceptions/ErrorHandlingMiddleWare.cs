@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-
 namespace Ecommerce.Web.Exceptions;
 
 public class ErrorHandlingMiddleware

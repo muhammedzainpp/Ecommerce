@@ -1,8 +1,6 @@
 using Ecommerce.Web.Apis;
 using Ecommerce.Web.Application.Common.DI;
 using Ecommerce.Web.Application.Interfaces;
-using Ecommerce.Web.Application.Products.Commands;
-using Ecommerce.Web.Client.Pages;
 using Ecommerce.Web.Client.Services.Products;
 using Ecommerce.Web.Client.Services;
 using Ecommerce.Web.Components;
@@ -10,11 +8,12 @@ using Ecommerce.Web.Components.Account;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Net.NetworkInformation;
 using Ecommerce.Web.Client.Services.Categories;
 using Ecommerce.Web.Data;
 using Ecommerce.Web.Exceptions;
 using Blazored.Toast;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Ecommerce.Web.Client.Services.Users;
 
 
 namespace Ecommerce.Web;
@@ -25,6 +24,7 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddApplication();
 
+        builder.Services.AddAuthorization();
         // Add services to the container.
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents()
@@ -38,24 +38,42 @@ public class Program
         builder.Services.AddScoped<IApiService, ApiService>();
         builder.Services.AddScoped<IProductService, ProductService>();
         builder.Services.AddScoped<ICategoryService, CategoryService>();
+        builder.Services.AddScoped<IUserService, UserService>();
+
         builder.Services.AddBlazoredToast();
 
         builder.Services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = IdentityConstants.ApplicationScheme;
-                options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-            })
-            .AddIdentityCookies();
+        {
+            options.DefaultScheme = IdentityConstants.ApplicationScheme;
+            options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+            options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        })
+        .AddIdentityCookies();
 
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-        builder.Services.AddDbContext<IAppDbContext,ApplicationDbContext>(options =>
+        builder.Services.AddDbContext<IAppDbContext, ApplicationDbContext>(options =>
             options.UseSqlServer(connectionString));
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-        
-        builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+
+        builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddSignInManager()
             .AddDefaultTokenProviders();
+
+        builder.Services.ConfigureApplicationCookie(options =>
+        {
+            options.Cookie.HttpOnly = false;
+            options.Events.OnRedirectToLogin = context =>
+            {
+                context.Response.StatusCode = 401;
+                return Task.CompletedTask;
+            };
+        });
+
+        builder.Services.AddControllers().AddNewtonsoftJson();
+        builder.Services.AddControllersWithViews();
+        builder.Services.AddRazorPages();
 
         builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
@@ -75,6 +93,8 @@ public class Program
         }
 
         app.UseHttpsRedirection();
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         app.UseStaticFiles();
         app.UseAntiforgery();
@@ -89,7 +109,7 @@ public class Program
 
         // Add additional endpoints required by the Identity /Account Razor components.
         app.MapAdditionalIdentityEndpoints();
-   
+
         app.Run();
     }
 }
