@@ -26,7 +26,7 @@ public class PersistentAuthenticationStateProvider : AuthenticationStateProvider
         }
 
         Claim[] claims = [
-            new Claim(ClaimTypes.NameIdentifier, userInfo.UserId),
+            new Claim(ClaimTypes.NameIdentifier, userInfo.ApplicationUserId),
             new Claim(ClaimTypes.Name, userInfo.Email),
             new Claim(ClaimTypes.Email, userInfo.Email)];
 

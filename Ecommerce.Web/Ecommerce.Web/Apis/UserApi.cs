@@ -16,19 +16,18 @@ public static class UserApi
     public static void MapUsers(this RouteGroupBuilder app)
     {
         var group = app.MapGroup("users");
-        group.MapPost("/user", GetUser);
+        group.MapGet("/", GetUser);
         group.MapPost("/", CreateUser);
     }
-    private static async Task<IResult> GetUser( [FromServices]IAppDbContext context, [FromServices] UserManager<ApplicationUser> UserManager)
+    private static async Task<IResult> GetUser(string applicationUserId, [FromServices] IAppDbContext context)
     {
 
-         var user = UserManager.Users.FirstOrDefault(x=>x.UserName == ClaimsPrincipal.Current.Identity.Name);
-        var customUser =await context.Users
-            .FirstOrDefaultAsync(x => x.UserName == user.UserName);
-        if (customUser is null)
+        var user = await context.Users
+            .FirstOrDefaultAsync(x => x.ApplicationUserId == applicationUserId);
+        if (user is null)
             return Results.Ok(ResponseHelpers.OnError<UserDto>(new Exception("invalid application user id")));
 
-        return Results.Ok(ResponseHelpers.OnSuccess(customUser.MapToDto()));
+        return Results.Ok(ResponseHelpers.OnSuccess(user.MapToDto()));
     }
 
     private static async Task<IResult> CreateUser([FromServices] IAppDbContext context, [FromBody] UserCommand user)

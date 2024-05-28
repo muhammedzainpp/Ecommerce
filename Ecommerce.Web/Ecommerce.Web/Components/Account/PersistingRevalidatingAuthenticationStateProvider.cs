@@ -1,4 +1,5 @@
 using Ecommerce.Web.Client;
+using Ecommerce.Web.Client.Services.Users;
 using Ecommerce.Web.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -17,6 +18,7 @@ internal sealed class PersistingRevalidatingAuthenticationStateProvider : Revali
 {
     private readonly IServiceScopeFactory scopeFactory;
     private readonly PersistentComponentState state;
+    private readonly IUserService userService;
     private readonly IdentityOptions options;
 
     private readonly PersistingComponentStateSubscription subscription;
@@ -27,11 +29,13 @@ internal sealed class PersistingRevalidatingAuthenticationStateProvider : Revali
         ILoggerFactory loggerFactory,
         IServiceScopeFactory serviceScopeFactory,
         PersistentComponentState persistentComponentState,
-        IOptions<IdentityOptions> optionsAccessor)
+        IOptions<IdentityOptions> optionsAccessor,
+          IUserService userService)
         : base(loggerFactory)
     {
         scopeFactory = serviceScopeFactory;
         state = persistentComponentState;
+        this.userService = userService;
         options = optionsAccessor.Value;
 
         AuthenticationStateChanged += OnAuthenticationStateChanged;
@@ -85,14 +89,20 @@ internal sealed class PersistingRevalidatingAuthenticationStateProvider : Revali
 
         if (principal.Identity?.IsAuthenticated == true)
         {
-            var userId = principal.FindFirst(options.ClaimsIdentity.UserIdClaimType)?.Value;
+            var applicationUserId = principal.FindFirst(options.ClaimsIdentity.UserIdClaimType)?.Value;
             var email = principal.FindFirst(options.ClaimsIdentity.EmailClaimType)?.Value;
+            if (applicationUserId is null) return;
 
-            if (userId != null && email != null)
+            var user = await userService.GetUserAsync(applicationUserId);
+
+            if (user is null) { return; }
+
+            if (applicationUserId != null && email != null)
             {
                 state.PersistAsJson(nameof(UserInfo), new UserInfo
                 {
-                    UserId = userId,
+                    UserId = user.Id,
+                    ApplicationUserId = applicationUserId,
                     Email = email,
                 });
             }

@@ -4,6 +4,8 @@ namespace Ecommerce.Web.Client;
 // to expose more information about the authenticated user to the client.
 public class UserInfo
 {
-    public required string UserId { get; set; }
+    public required int UserId { get; set; }
+    public required string ApplicationUserId { get; set; }
     public required string Email { get; set; }
+
 }
