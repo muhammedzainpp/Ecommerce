@@ -10,12 +10,12 @@ public class UserService(IApiService apiService) : IUserService
 
     public async Task CreateUserAsync(CreateUserCommand user)
     {
-       await _apiservice.Post(_baseUrl,user);
+        await _apiservice.Post(_baseUrl, user);
     }
 
-    public async Task<GetUserDto?> GetUserAsync(ClaimsPrincipal user)
+    public async Task<GetUserDto?> GetUserAsync(string applicationUserId)
     {
-        var response =  await _apiservice.Post<ClaimsPrincipal,GetUserDto>($"{_baseUrl}/user",user);
+        var response = await _apiservice.Get<GetUserDto>($"{_baseUrl}?applicationUserId={applicationUserId}");
         return response.Result;
     }
 }
