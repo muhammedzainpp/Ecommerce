@@ -24,7 +24,6 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddApplication();
 
-        builder.Services.AddAuthorization();
         // Add services to the container.
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents()
@@ -46,10 +45,9 @@ public class Program
         {
             options.DefaultScheme = IdentityConstants.ApplicationScheme;
             options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-            options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         })
-        .AddIdentityCookies();
+         .AddIdentityCookies();
+
 
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
         builder.Services.AddDbContext<IAppDbContext, ApplicationDbContext>(options =>
@@ -61,19 +59,9 @@ public class Program
             .AddSignInManager()
             .AddDefaultTokenProviders();
 
-        builder.Services.ConfigureApplicationCookie(options =>
-        {
-            options.Cookie.HttpOnly = false;
-            options.Events.OnRedirectToLogin = context =>
-            {
-                context.Response.StatusCode = 401;
-                return Task.CompletedTask;
-            };
-        });
 
-        builder.Services.AddControllers().AddNewtonsoftJson();
-        builder.Services.AddControllersWithViews();
-        builder.Services.AddRazorPages();
+
+
 
         builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
@@ -93,8 +81,7 @@ public class Program
         }
 
         app.UseHttpsRedirection();
-        app.UseAuthentication();
-        app.UseAuthorization();
+
 
         app.UseStaticFiles();
         app.UseAntiforgery();
