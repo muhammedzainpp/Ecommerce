@@ -6,10 +6,11 @@ public interface IProductService
 {
     IEnumerable<ProductDto> Products { get; set; }
 
-    Task<IEnumerable<OutProductDto>> GetOutProductsByBaseProduct(int productId);
+    //Task<IEnumerable<ItemDto>> GetOutProductsByBaseProduct(int productId);
     Task<ProductDto> GetProduct(int id);
     Task GetProducts();
     Task<IEnumerable<ProductDto>> GetProductsByCategory(int categoryId);
+    Task<int> SaveItem(ItemDto item);
     Task<int> SaveProduct(ProductDto product);
     //Task GetProductsByCategory(int categoryId);
 }

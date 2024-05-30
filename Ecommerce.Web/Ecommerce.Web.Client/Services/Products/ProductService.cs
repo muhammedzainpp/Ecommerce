@@ -31,14 +31,25 @@ public class ProductService(IApiService apiservice) : IProductService
             throw new Exception();       
     }
 
-    public async Task<IEnumerable<OutProductDto>> GetOutProductsByBaseProduct(int productId)
-    {
-        var response = await _apiservice.GetById<IEnumerable<OutProductDto>>($"{_baseUrl}/GetOutProducts", productId);
-        if (response != null && response.Result != null)
-            return response.Result;
-        else
-            throw new Exception();
-    }
+    //public async Task<IEnumerable<ProductDto>> GetAllProducts(string productname)
+    //{
+    //    var response = await _apiservice.GetById<IEnumerable<ProductDto>>($"{_baseUrl}/GetByCategory", categoryId);
+    //    if (response != null && response.Result != null)
+    //        return response.Result;
+    //    else
+    //        throw new Exception();
+    //}
+
+
+
+    //public async Task<IEnumerable<OutProductDto>> GetOutProductsByBaseProduct(int productId)
+    //{
+    //    var response = await _apiservice.GetById<IEnumerable<OutProductDto>>($"{_baseUrl}/GetOutProducts", productId);
+    //    if (response != null && response.Result != null)
+    //        return response.Result;
+    //    else
+    //        throw new Exception();
+    //}
 
     public async Task<int> SaveProduct(ProductDto product)
     {
@@ -48,6 +59,17 @@ public class ProductService(IApiService apiservice) : IProductService
         else
             throw new Exception();
     }
+
+    public async Task<int> SaveItem(ItemDto item)
+    {
+        var response = await _apiservice.Post($"{_baseUrl}/SaveItem", item);
+        if (response != null) 
+            return response.Result;
+        else
+            throw new Exception();
+    }
+
+
 
 
 }
