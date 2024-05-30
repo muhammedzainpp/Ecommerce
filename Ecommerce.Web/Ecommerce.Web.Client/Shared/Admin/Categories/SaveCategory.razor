@@ -32,7 +32,7 @@
                <div class="col-xl-6 col-lg-6 col-md-12">
                            <div class="form-group mb-3">
                                 <label style="margin-left:190px" for="text">ImageUrl </label>
-                                <InputText @bind-Value="Category.ImageUrl" style="margin-left:190px;height:1px" type="text" class="form-control" />
+                                <InputFile OnChange="@LoadFiles" @bind-Value="Category.ImageUrl" style="margin-left:190px;height:1px;padding-top:12px" type="text" class="form-control" />
                             </div>
                 </div>
 
