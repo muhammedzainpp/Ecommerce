@@ -8,6 +8,7 @@ public interface IAppDbContext
     DbSet<Category> Categories { get; set; }
     DbSet<Item> Items { get; set; }
     DbSet<User> Users { get; set; }
+    DbSet<AppSetting> AppSettings { get; set; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

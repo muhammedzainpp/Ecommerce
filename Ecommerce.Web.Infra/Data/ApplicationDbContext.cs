@@ -3,6 +3,8 @@ using Ecommerce.Web.Domain.Entities;
 using Ecommerce.Web.Domain.Entities.Base;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
+using System.Xml;
 namespace Ecommerce.Web.Data;
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
                     : IdentityDbContext<ApplicationUser>(options), IAppDbContext
@@ -11,6 +13,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Category> Categories { get;set;}
     public DbSet<Item> Items { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<AppSetting> AppSettings { get; set; }
+
+
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         var entries = ChangeTracker
@@ -28,5 +33,18 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             }
         }
         return await base.SaveChangesAsync(cancellationToken);
+    }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        builder.Entity<AppSetting>()
+          .HasKey(e => e.Id);
+        builder.Entity<AppSetting>()
+           .Property(e => e.Country)
+           .IsRequired(); 
+
+        builder.Entity<AppSetting>()
+           .HasData(new AppSetting { Id = 1, Country = "USA" , CurrencyName = "USD" ,CurrencySymbol= "$" });
+        base.OnModelCreating(builder);
     }
 }
