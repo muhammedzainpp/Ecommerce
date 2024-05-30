@@ -12,8 +12,8 @@ using Ecommerce.Web.Client.Services.Categories;
 using Ecommerce.Web.Data;
 using Ecommerce.Web.Exceptions;
 using Blazored.Toast;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Ecommerce.Web.Client.Services.Users;
+using Ecommerce.Web.Client.Services.AppSettings;
 
 
 namespace Ecommerce.Web;
@@ -29,6 +29,10 @@ public class Program
             .AddInteractiveServerComponents()
             .AddInteractiveWebAssemblyComponents();
 
+       
+
+       
+
         builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7290") });
         builder.Services.AddCascadingAuthenticationState();
         builder.Services.AddScoped<IdentityUserAccessor>();
@@ -38,6 +42,8 @@ public class Program
         builder.Services.AddScoped<IProductService, ProductService>();
         builder.Services.AddScoped<ICategoryService, CategoryService>();
         builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<IAppSettingsService, AppSettingsService>();
+
 
         builder.Services.AddBlazoredToast();
 
