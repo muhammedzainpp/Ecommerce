@@ -1,0 +1,98 @@
+﻿@page "/saveproduct"
+@rendermode InteractiveServer
+
+
+<link rel="stylesheet"
+	  href="https://fonts.googleapis.com/css?family=Roboto:400,700" />
+
+<link rel="stylesheet" href="admincss/fontawesome.minold.css" />
+
+<link rel="stylesheet" href="admincss/bootstrap.minold.css" />
+
+<link rel="stylesheet" href="admincss/templatemo-style.css">
+
+<div class="container tm-mt-big tm-mb-big">
+	<div class="row">
+		<div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 mx-auto">
+			<div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+				<div class="row">
+					<div style="margin-left:300px" class="col-12">
+						<h2 class="tm-block-title d-inline-block">Add Product</h2>
+					</div>
+				</div>
+				<div style="line-height:1px" class="row tm-edit-product-row">
+					<EditForm method="post" Model="Product" FormName="create" class="tm-edit-product-form" OnValidSubmit="SaveProductAsync">
+						<div class="col-xl-6 col-lg-6 col-md-12">
+							<div class="form-group mb-3">
+								<label style="margin-left:190px" for="name">Product Name </label>
+								<InputText @bind-Value="Product.Name" style="margin-left:190px;height:1px" type="text" class="form-control" />
+							</div>
+						</div>
+						<div class="col-xl-6 col-lg-6 col-md-12">
+							<div class="form-group mb-3">
+								<label style="margin-left:190px" for="name">Description </label>
+								<InputText @bind-Value="Product.Description" style="margin-left:190px;height:1px" type="text" class="form-control" />
+							</div>
+						</div>
+						<div class="col-xl-6 col-lg-6 col-md-12">
+							<div class="form-group mb-3">
+								<label style="margin-left:190px" for="text">ImageUrl </label>
+								<InputFile OnChange="@LoadFiles" @bind-Value="Product.ImageUrl" style="margin-left:190px;padding-top:12px" type="text" class="form-control" />
+							</div>
+						</div>
+						<div class="col-xl-6 col-lg-6 col-md-12" style="color:white;margin-left:190px">
+							<div class="form-group mb-3">
+								<p>Please choose Category:</p>
+								<InputSelect id="category" class="form-control" style="height:auto;padding:5px"
+											 Value="CategoryId"
+											 ValueExpression="@(()=>CategoryId)"
+											 ValueChanged="@(async(int args) => {CategoryId = args;await GetSubCategories();})">
+									<option value="">Select</option>
+									@if (Categories.Result is not null)
+									{
+
+										@foreach (var category in Categories.Result)
+										{
+											<option value="@category.Id">
+												@category.Name
+											</option>
+										}
+									}
+								</InputSelect>
+							</div>
+						</div>
+						<div class="col-xl-6 col-lg-6 col-md-12" style="color:white;margin-left:190px">
+							<div class="form-group mb-3">
+								<p>Please choose Sub Category:</p>
+								<InputSelect id="category" class="form-control" @bind-Value="Product.CategoryId" style="height:auto;padding:5px">
+									<option value="">Select</option>
+									@foreach (var subcategory in SubCategories)
+									{
+										<option value="@subcategory.Id">
+											@subcategory.Name
+										</option>
+									}
+								</InputSelect>
+							</div>
+						</div>
+						<div class="col-xl-6 col-lg-6 col-md-12">
+							<div class="form-group mb-3">
+								<label style="margin-left:190px" for="name">Price <span>@AppSetting.CurrencySymbol</span> </label>
+								<InputNumber @bind-Value="Product.Cost.Amount" style="margin-left:190px;height:1px" type="text" class="form-control" />
+							</div>
+						</div>
+						<div class="col-xl-6 col-lg-6 col-md-12">
+							<div class="form-group mb-3">
+								<label style="margin-left:190px" for="name">Quantity </label>
+								<InputNumber @bind-Value="Product.Quantity" style="margin-left:190px;height:1px" type="text" class="form-control" />
+							</div>
+						</div>
+						<div style="margin-left:191px;width:375px" class="col-12">
+							<button type="submit" class="btn btn-primary btn-block text-uppercase">Add Product Now</button>
+						</div>
+					</EditForm>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

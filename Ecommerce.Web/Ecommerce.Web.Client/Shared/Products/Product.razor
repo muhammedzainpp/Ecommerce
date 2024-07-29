@@ -1,0 +1,33 @@
+﻿@* @page "/product/{ProductId:int}"
+@rendermode InteractiveWebAssembly
+<div class="product_section layout_padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1 class="product_taital">@ProductWithGivenId.Title</h1>
+                <p class="product_text">incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation</p>
+            </div>
+        </div>
+        <div class="product_section_2 layout_padding">
+            <div class="row">
+                <div class="col-lg-3 col-sm-6">
+                    <div style="margin-left:433px" class="product_box">
+                        <h4 class="bursh_text">@ProductWithGivenId.Title</h4>
+                        <p class="lorem_text">@ProductWithGivenId.Description</p>
+                        <img src="@ProductWithGivenId.ImageUrl" class="image_1">
+                        <div class="btn_main">
+                            <div class="buy_bt">
+                                <ul>
+                                    <li class="active"><a href="#">Buy Now</a></li>
+                                    <li><a href="#">Buy Now</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="seemore_bt"><a href="#">See More</a></div>
+        </div>
+    </div>
+</div> *@
+

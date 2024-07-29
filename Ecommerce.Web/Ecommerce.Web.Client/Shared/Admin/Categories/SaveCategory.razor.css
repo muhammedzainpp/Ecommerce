@@ -1,0 +1,19 @@
+﻿.addcategorycontainer {
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.addcategorycontainer-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #212934;
+    border-radius: 10px;
+    color: white;
+    width: 30%;
+    height: 60%;
+    padding: 10px 30px;
+    overflow: hidden;
+}

@@ -1,0 +1,37 @@
+﻿@page "/savecategory"
+@rendermode InteractiveAuto
+
+
+
+<BlazoredToasts />
+<div class="addcategorycontainer">
+	<div class="addcategorycontainer-body">
+		<div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+			<div>
+				<div>
+					<h2 class="tm-block-title d-inline-block ">Add Category</h2>
+				</div>
+			</div>
+			<div>
+				<EditForm method="post" Model="Category" FormName="create" class="tm-edit-product-form" OnValidSubmit="SaveMainCategory">
+					<div>
+						<div class="form-group mb-3">
+							<label for="name">Category Name </label>
+							<InputText @bind-Value="Category.Name" type="text" class="form-control" />
+						</div>
+					</div>
+
+					<div>
+						<div class="form-group mb-3">
+							<label for="text">ImageUrl </label>
+							<InputFile OnChange="@LoadFiles" @bind-Value="Category.ImageUrl" type="text" class="form-control" />
+						</div>
+					</div>
+					<div class="col-12">
+						<button style="margin-left:70px;margin-right:70px;"  type="submit" class="btn btn-primary btn-block text-uppercase ">Add Product Now</button>
+					</div>
+				</EditForm>
+			</div>
+		</div>
+	</div>
+</div>
