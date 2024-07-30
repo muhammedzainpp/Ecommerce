@@ -5,6 +5,6 @@ public class CategoryDto
 {
     public required int Id { get; set; }
     public required string Name { get;  set; } = default!;
-    public required string ImageUrl { get; set; }
+    public  string? ImageUrl { get; set; }
     public  int? ParentCategoryId { get; set; }
 }

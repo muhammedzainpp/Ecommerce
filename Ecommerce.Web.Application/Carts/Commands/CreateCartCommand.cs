@@ -3,7 +3,6 @@ using Ecommerce.Web.Application.Interfaces;
 using Ecommerce.Web.Domain.Entities;
 using Ecommerce.Web.Domain.Entities.Base;
 using Ecommerce.Web.Domain.ValueObjects;
-using Ecommerce.Web.Shared.Common.Dtos;
 using Ecommerce.Web.Shared.Common.Enums;
 using Ecommerce.Web.Shared.Reponses;
 using Microsoft.EntityFrameworkCore;
@@ -13,17 +12,19 @@ using static Ecommerce.Web.Application.Common.Helpers.ResponseHelpers;
 namespace Ecommerce.Web.Application.Carts.Commands;
 public class CreateCartCommand : ICommand<int>
 {
-    public int Id { get; set; }
     public int UserId { get; set; }
     public int ProductId { get; set; }
-    public int Quantity { get; set; }
-    public required MoneyDto TotalPrice { get; set; }
     public CartActitvity Activity { get; set; }
-
 }
 
-public class CreateCartCommandHandler(IAppDbContext _context) : ICommandHandler<CreateCartCommand, int>
+public class CreateCartCommandHandler : ICommandHandler<CreateCartCommand, int>
 {
+    private readonly IAppDbContext _context;
+
+    public CreateCartCommandHandler(IAppDbContext appDbContext)
+    {
+        _context = appDbContext;
+    }
     public async Task<Response<int>> Handle(CreateCartCommand request, CancellationToken cancellationToken)
     {
         return await TryHandleAsync(request);
@@ -46,6 +47,7 @@ public class CreateCartCommandHandler(IAppDbContext _context) : ICommandHandler<
 
     private async Task<int> SaveAsync(CreateCartCommand request)
     {
+
         Cart? cart;
         cart = await IsCartExist(request.UserId);
         if (cart is not null)
@@ -72,11 +74,11 @@ public class CreateCartCommandHandler(IAppDbContext _context) : ICommandHandler<
     }
     private async Task<int> UpdateAsync(Cart cart, CreateCartCommand request)
     {
-        CartItem? cartItem = cart
-            .CartItems
-            .FirstOrDefault(x => x.ProductId == request.ProductId);
+        CartItem? cartItem = await _context
+                                   .CartItems
+                                   .FirstOrDefaultAsync(x => x.CartId == request.UserId && x.ProductId == request.ProductId);
 
-        if(cartItem is not null)
+        if (cartItem is not null)
             await UpdateCartItem(cart, request);
         else
             await CreateNewCartItem(request);
@@ -88,12 +90,12 @@ public class CreateCartCommandHandler(IAppDbContext _context) : ICommandHandler<
     {
         var product = await _context
             .Products
-            .FirstOrDefaultAsync(x => x.Id == request.ProductId) ?? 
+            .FirstOrDefaultAsync(x => x.Id == request.ProductId) ??
                 throw new Exception("Product Not Found");
 
         string currencyName = product.Cost.Currency.Name;
         string symbol = product.Cost.Currency.Symbol;
-        var cartItem = cart.CartItems.FirstOrDefault(x => x.ProductId == request.ProductId) ?? throw new Exception("Cart Item Not Found");
+        var cartItem = await _context.CartItems.FirstOrDefaultAsync(x => x.ProductId == request.ProductId && x.CartId == request.UserId) ?? throw new Exception("Cart Item Not Found");
         if (request.Activity == CartActitvity.Increment)
             cartItem.Quantity++;
         else
@@ -105,18 +107,18 @@ public class CreateCartCommandHandler(IAppDbContext _context) : ICommandHandler<
 
     public async Task CreateNewCartItem(CreateCartCommand request)
     {
-        var product = await _context.Products.FindAsync(request.ProductId) ?? throw new Exception("Product Not Found");
+        var product = await _context.Products.FirstOrDefaultAsync(x => x.Id == request.ProductId) ?? throw new Exception("Product Not Found");
         string currencyName = product.Cost.Currency.Name;
         string symbol = product.Cost.Currency.Symbol;
         decimal amount = product.Cost.Amount;
-        int quantity = request.Quantity+1;
+        int quantity = 1;
 
         CartItem cartItem = new CartItem()
         {
             CartId = request.UserId,
             ProductId = request.ProductId,
             Quantity = quantity,
-            TotalPrice = Money.Create(currencyName,symbol,amount)
+            TotalPrice = Money.Create(currencyName, symbol, amount)
         };
 
         await _context.CartItems.AddAsync(cartItem);

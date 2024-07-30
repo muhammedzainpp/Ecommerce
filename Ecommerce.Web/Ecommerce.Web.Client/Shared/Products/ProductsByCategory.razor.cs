@@ -5,7 +5,6 @@ using Ecommerce.Web.Client.Services.Carts.Dtos;
 using Ecommerce.Web.Client.Services.Products;
 using Ecommerce.Web.Client.Services.Products.Dtos;
 using Ecommerce.Web.Client.Services.Users;
-using Ecommerce.Web.Shared.Common.Dtos;
 using Ecommerce.Web.Shared.Common.Enums;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -38,7 +37,6 @@ public partial class ProductsByCategory
     public required AuthenticationStateProvider AuthenticationStateProvider { get; set; }
     protected override async Task OnInitializedAsync()
     {
-
         CartServices.OnButtonClicked += CartEventService.AddToCart;
         Products = await Service.GetProductsByCategory(CategoryId);
         int? userId =  await GetCurrentUserId();
@@ -63,19 +61,29 @@ public partial class ProductsByCategory
 
     public async Task incrementcount(int productId)
     {
-        var cartitemDto = new CartItemDto
+        var cartitemDto = new AddCartItemDto
         { 
             ProductId = productId,
             UserId = UserId,
             Activity = CartActitvity.Increment,
-            TotalPrice = new MoneyDto()
         };
         await CartServices.SetTotalItemCount(cartitemDto);
     }
 
-    public void Dispose()
+    public async Task decrementcount(int productId)
     {
-        CartServices.OnButtonClicked -= CartEventService.AddToCart;
+        var cartitemDto = new AddCartItemDto
+        {
+            ProductId = productId,
+            UserId = UserId,
+            Activity = CartActitvity.Decrement,
+        };
+        await CartServices.SetTotalItemCount(cartitemDto);
+        
+    }
+    void IDisposable.Dispose()
+    {
+      CartServices.OnButtonClicked -= CartEventService.AddToCart;
     }
 
 

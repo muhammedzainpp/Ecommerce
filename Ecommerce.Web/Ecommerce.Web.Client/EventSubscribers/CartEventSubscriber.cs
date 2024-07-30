@@ -3,10 +3,17 @@ using Ecommerce.Web.Client.Services.Carts.Dtos;
 
 namespace Ecommerce.Web.Client.EventSubscribers;
 
-public class CartEventSubscriber(ICartServices cartServices)
+public class CartEventSubscriber
+
 {
-    public async Task AddToCart(CartItemDto request)
+    private readonly ICartServices _cartServices;
+
+    public CartEventSubscriber(ICartServices cartServices)
     {
-        await cartServices.AddToCart(request);
+        _cartServices = cartServices;
+    }
+    public async Task AddToCart(AddCartItemDto request)
+    {
+        await _cartServices.AddToCart(request);
     }
 }

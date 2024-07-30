@@ -1,6 +1,6 @@
 ﻿@page "/productsbycategory/{CategoryId:int}"
-@rendermode InteractiveWebAssembly
 @implements IDisposable
+@rendermode InteractiveAuto
 <style>
     button {
         background-color: black;
@@ -8,10 +8,8 @@
         border-radius: 5px;
         border: solid 1px;
         border-color: white;
-        padding: 5px 5px;
         padding: 5px 18px;
         align-content: end;
-       
     }
 
         button:hover {
@@ -19,53 +17,50 @@
             color: black;
         }
 
-
     .productbody {
         display: grid;
         grid-template-columns: auto auto auto auto;
         padding: 10px;
     }
 
-    .productinner
-    {
+    .productinner {
+        display: flex; /* Make this a flex container */
+        flex-direction: column; /* Stack children vertically */
+        justify-content: space-between; /* Push children apart */
         background-color: rgba(255, 255, 255, 0.8);
         border: 1px solid rgba(0, 0, 0, 0.8);
         padding: 20px;
         font-size: 30px;
         text-align: center;
-        border-radius:20px;
-        padding: 20px 20px;
-        margin:10px 10px;
+        border-radius: 20px;
+        margin: 10px;
     }
 
-    .prdctbuttons
-    {
-        display:flex;
-        flex-direction:row;
-        justify-content:center;
-        align-items:flex-end;
-        
+    .prdctbuttons {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        margin-top: auto; /* Push buttons to bottom */
     }
-
 </style>
+
 <div class="container-fluid pt-5">
     <div class="row px-xl-5 pb-3">
         <div class="productbody">
-        @if (Products is not null)
-        {
-            
-            foreach (var product in Products)
+            @if (Products is not null)
             {
+                foreach (var product in Products)
+                {
                     <div class="productinner">
                         <h5>@product.Name</h5>
                         <p>@product.Description</p>
                         <div class="prdctbuttons">
                             <button @onclick="async()=>await incrementcount(product.Id)">+</button>
-                            <button >-</button>
+                            <button @onclick="async()=>await decrementcount(product.Id)">-</button>
                         </div>
                     </div>
+                }
             }
-        }
         </div>
     </div>
 </div>

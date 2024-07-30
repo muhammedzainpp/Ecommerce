@@ -1,17 +1,31 @@
-﻿using Ecommerce.Web.Client.Services.Users;
+﻿using Ecommerce.Web.Client.Services.Carts;
+using Ecommerce.Web.Client.Services.Carts.Dtos;
+using Ecommerce.Web.Client.Services.Users;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 
-namespace Ecommerce.Web.Client.Services;
+namespace Ecommerce.Web.Client.Shared.Carts;
 
-public class AppState
+public partial class Cart
 {
     public int UserId { get; set; }
-
     [Inject]
     public required IUserService UserService { get; set; }
+    [Inject]
+    public required ICartServices CartService { get; set; }
+    public IEnumerable<GetCartItemDto> CartItems { get; set; } = new List<GetCartItemDto>();
+
+    [Inject]
     public required AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        int? userId = await GetCurrentUserId();
+        if (userId is not null) UserId = userId.Value;
+        CartItems = await CartService.GetAllCartItems(UserId);
+
+    }
+
 
     private async Task<int?> GetCurrentUserId()
     {
@@ -28,5 +42,4 @@ public class AppState
         return null;
 
     }
-
 }
