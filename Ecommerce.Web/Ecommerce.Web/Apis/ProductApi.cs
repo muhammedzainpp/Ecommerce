@@ -16,7 +16,7 @@ public static class ProductApi
         group.MapPost("/",SaveProducts);
         group.MapGet("/", GetProducts);
         group.MapGet("/GetById/{id}", GetProduct);
-        group.MapGet("/GetByCategory/{id}", GetProductsByCategory);
+        group.MapGet("/GetByCategory/{id}/{userId}", GetProductsByCategory);
         group.MapGet("/GetProducts/{id}", GetProducts);
     }
     private static async Task<IResult> GetProducts([FromServices] IMediator mediatr)
@@ -37,9 +37,9 @@ public static class ProductApi
         var response = await mediatr.Send(request);
         return Results.Ok(response);
     }
-    private static async Task<IResult> GetProductsByCategory([FromServices] IMediator mediatr , int id)
+    private static async Task<IResult> GetProductsByCategory([FromServices] IMediator mediatr , int id,int userId)
     {
-        var response = await mediatr.Send(new GetProductsByCategoryQuery() { CategoryId = id});
+        var response = await mediatr.Send(new GetProductsByCategoryQuery() { CategoryId = id,UserId = userId});
         return Results.Ok(response);
     }
 

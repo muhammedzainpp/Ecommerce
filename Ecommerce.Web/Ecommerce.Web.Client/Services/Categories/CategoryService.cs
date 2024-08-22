@@ -14,7 +14,7 @@ public class CategoryService(IApiService apiService) : ICategoryService
     }
     public async Task<IEnumerable<CategoryDto>> GetSubCategories(int parentCategoryId)
     {
-        var response = await _apiservice.GetById<IEnumerable<CategoryDto>>(_baseUrl+"/GetSubCategories",parentCategoryId);
+        var response = await _apiservice.GetById<IEnumerable<CategoryDto>>($"{_baseUrl}/GetSubCategories/{ parentCategoryId}");
         if (response != null && response.Result != null)
             return response.Result;
         else

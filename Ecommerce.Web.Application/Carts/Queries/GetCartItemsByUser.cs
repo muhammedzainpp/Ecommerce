@@ -44,7 +44,7 @@ public class GetCartItemsByUserHandler(IAppDbContext _context) : IQueryHandler<G
                     .Carts
                     .Include(x => x.CartItems)
                     .ThenInclude(x=>x.Product)
-                    .FirstOrDefault(x => x.Id == request.UserId) ?? throw new Exception("Cart Not Found");
+                    .FirstOrDefault(x => x.UserId == request.UserId) ?? throw new Exception("Cart Not Found");
          
          return cart.CartItems.Select(x => new GetCartItemDto
          {

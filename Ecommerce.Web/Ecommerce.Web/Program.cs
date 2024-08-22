@@ -14,8 +14,6 @@ using Ecommerce.Web.Exceptions;
 using Blazored.Toast;
 using Ecommerce.Web.Client.Services.Users;
 using Ecommerce.Web.Client.Services.AppSettings;
-using Microsoft.AspNetCore.Components;
-using Ecommerce.Web.Client.EventSubscribers;
 using Ecommerce.Web.Client.Services.Carts;
 
 
@@ -31,27 +29,21 @@ public class Program
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents()
             .AddInteractiveWebAssemblyComponents();
-
-
-
-
-
-        builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7290") });
+        builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7290") });
         builder.Services.AddCascadingAuthenticationState();
+        builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
         builder.Services.AddScoped<IdentityUserAccessor>();
         builder.Services.AddScoped<IdentityRedirectManager>();
-        builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
-        builder.Services.AddScoped<IApiService, ApiService>();
+        builder.Services.AddSingleton<IApiService, ApiService>();
         builder.Services.AddScoped<IProductService, ProductService>();
-
         builder.Services.AddScoped<ICategoryService, CategoryService>();
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IAppSettingsService, AppSettingsService>();
-        builder.Services.AddScoped<ICartServices, CartServices>();
-        builder.Services.AddScoped<CartEventSubscriber>();
+        builder.Services.AddSingleton<ICartServices, CartServices>();
+        builder.Services.AddSingleton<AppState>();
+
 
         builder.Services.AddBlazoredToast();
-
         builder.Services.AddAuthentication(options =>
         {
             options.DefaultScheme = IdentityConstants.ApplicationScheme;
@@ -59,7 +51,7 @@ public class Program
         })
          .AddIdentityCookies();
 
-
+        builder.Services.AddHttpContextAccessor();
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
         builder.Services.AddDbContext<IAppDbContext, ApplicationDbContext>(options =>
             options.UseSqlServer(connectionString));
@@ -93,6 +85,8 @@ public class Program
 
         app.UseHttpsRedirection();
 
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         app.UseStaticFiles();
         app.UseAntiforgery();

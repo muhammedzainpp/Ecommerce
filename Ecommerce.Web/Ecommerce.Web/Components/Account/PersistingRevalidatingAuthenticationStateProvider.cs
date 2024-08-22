@@ -1,12 +1,10 @@
 using Ecommerce.Web.Client;
-using Ecommerce.Web.Client.Services;
 using Ecommerce.Web.Client.Services.Users;
 using Ecommerce.Web.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
@@ -27,7 +25,6 @@ internal sealed class PersistingRevalidatingAuthenticationStateProvider : Revali
     private readonly PersistingComponentStateSubscription subscription;
 
     private Task<AuthenticationState>? authenticationStateTask;
-
     public PersistingRevalidatingAuthenticationStateProvider(
         ILoggerFactory loggerFactory,
         IServiceScopeFactory serviceScopeFactory,
@@ -103,6 +100,7 @@ internal sealed class PersistingRevalidatingAuthenticationStateProvider : Revali
 
             if (applicationUserId != null && email != null)
             {
+
                 state.PersistAsJson(nameof(UserInfo), new UserInfo
                 {
                     UserId = user.Id,

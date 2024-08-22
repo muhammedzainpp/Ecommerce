@@ -24,8 +24,16 @@ public class CartServices: ICartServices
 
     public async Task SetTotalItemCount(AddCartItemDto request)
     {
-        TotalItemCount++;
         await RaiseEvent(request);
+    }
+
+    public void IncrementTotalCount()
+    {
+        TotalItemCount += 1;
+    }
+    public void DecrementTotalCount()
+    {
+        TotalItemCount -= 1;
     }
     public async Task<Response<int>> AddToCart(AddCartItemDto request)
     {
@@ -33,12 +41,14 @@ public class CartServices: ICartServices
         return response;
     }
 
-
     public async Task<IEnumerable<GetCartItemDto>> GetAllCartItems(int userId)
-    {
-
-        var resposne = await _apiService.GetById<IEnumerable<GetCartItemDto>>(_baseUrl, userId);
+    {   
+        var resposne = await _apiService.GetById<IEnumerable<GetCartItemDto>>($" {_baseUrl}/{userId}");
         if (resposne is null || resposne.Result is null) return null;
-        else return resposne.Result;
+        else
+        {
+            TotalItemCount = resposne.Result.Sum(x => x.Quantity);
+            return resposne.Result; 
+        }
     }
 }

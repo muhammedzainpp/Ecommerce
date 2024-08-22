@@ -14,9 +14,9 @@ public class ApiService(HttpClient http) : IApiService
 	}
 
 
-	public async Task<Response<T>> GetById<T>(string url, int id)
+	public async Task<Response<T>> GetById<T>(string url)
 	{
-		var response = await http.GetFromJsonAsync<Response<T>>($"{url}/{id}") ?? default!;
+		var response = await http.GetFromJsonAsync<Response<T>>($"{url}") ?? default!;
 		return response;
 	}
 

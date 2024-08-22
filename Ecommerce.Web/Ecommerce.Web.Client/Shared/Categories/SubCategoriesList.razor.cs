@@ -1,4 +1,5 @@
-﻿using Ecommerce.Web.Client.Services.Categories;
+﻿using Ecommerce.Web.Client.Services;
+using Ecommerce.Web.Client.Services.Categories;
 using Ecommerce.Web.Client.Services.Categories.Dtos;
 using Ecommerce.Web.Client.Services.Products;
 using Ecommerce.Web.Client.Services.Products.Dtos;
@@ -11,6 +12,8 @@ public partial class SubCategoriesList
 {
     [Parameter]
     public int ParentCategoryId { get; set; }
+    [Inject]
+    public required AppState AppState { get; set; }
 
     [Inject]
     public required ICategoryService Service { get; set; }
@@ -23,8 +26,12 @@ public partial class SubCategoriesList
     public IEnumerable<CategoryDto> SubCategories { get; set; } = new List<CategoryDto>();
     public IEnumerable<ProductDto> Products { get; set; } = new List<ProductDto>();
 
+    public int UserId { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
+        var userId = AppState.UserId;
+        if (userId is not null) UserId = userId.Value;
         SubCategories = await Service.GetSubCategories(ParentCategoryId);
     }
     //protected override async Task OnAfterRenderAsync(bool firstRender)

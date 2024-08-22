@@ -1,5 +1,5 @@
 ﻿@page "/counter"
-@rendermode InteractiveAuto
+@rendermode InteractiveWebAssembly
 
 <PageTitle>Counter</PageTitle>
 
@@ -10,10 +10,22 @@
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
 @code {
+
+    [Inject]
+    public PersistentComponentState State { get; set; }
     private int currentCount = 0;
 
     private void IncrementCount()
     {
         currentCount++;
+    }
+
+    public int? UserId { get; set; }
+
+    protected override void OnInitialized()
+    {
+        bool isStateExist = State.TryTakeFromJson<UserInfo>(nameof(UserInfo), out var userInfo);
+        UserId = userInfo?.UserId;
+        base.OnInitialized();
     }
 }

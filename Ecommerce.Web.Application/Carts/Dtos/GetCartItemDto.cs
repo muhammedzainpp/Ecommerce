@@ -10,6 +10,6 @@ public class GetCartItemDto
     public required ProductDto Product { get; set; }
     public int ProductId { get; set; }
     public int Quantity { get; set; }
-    public required MoneyDto TotalPrice { get; set; }
-    public CartActitvity Activity { get; set; }
+    public  MoneyDto? TotalPrice { get; set; }
+
 }

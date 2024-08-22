@@ -1,4 +1,10 @@
-﻿@rendermode RenderMode.InteractiveWebAssembly
+﻿@using System.Security.Claims
+@using Ecommerce.Web.Client.Services
+@using Ecommerce.Web.Client.Services.Carts
+@using Ecommerce.Web.Client.Services.Carts.Dtos
+@using Ecommerce.Web.Client.Services.Users
+@implements IDisposable
+@rendermode InteractiveAuto
 <!-- Start Top Nav -->
 <nav style="height:auto;padding-top:10px" class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
     <div class="container text-light">
@@ -58,9 +64,9 @@
                 <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
                     <i class="fa fa-fw fa-search text-dark mr-2"></i>
                 </a>
-                <a class="nav-icon position-relative text-decoration-none" href="#">
+                <a class="nav-icon position-relative text-decoration-none" href="cart">
                     <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
-                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span>
+                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">@CartItemCount</span>
                 </a>
                 <a class="nav-icon position-relative text-decoration-none" href="#">
                     <i class="fa fa-fw fa-user text-dark mr-3"></i>
@@ -72,3 +78,53 @@
     </div>
 </nav>
 <!-- Close Header -->
+
+
+@code
+{
+
+    [Inject]
+    public required AppState AppState { get; set; }
+    [Inject]
+    public required ICartServices CartService { get; set; }
+    public int UserId { get; set; }
+    [Inject]
+    public required IUserService UserService { get; set; }
+
+    [Inject]
+    public required AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+    public int CartItemCount { get; set; }
+    public IJSRuntime JS { get; set; } = default!;
+    public async Task OpenNav()
+    {
+        await JS.InvokeVoidAsync("openNav");
+
+    }
+    public async Task CloseNav()
+    {
+        await JS.InvokeVoidAsync("closeNav");
+
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        CartService.OnButtonClicked += AddToCart;
+        int? userId = AppState.UserId;
+        if (userId is not null) UserId = userId.Value;
+        await CartService.GetAllCartItems(UserId);
+        CartItemCount = CartService.TotalItemCount;
+    }
+
+
+    public async Task AddToCart(AddCartItemDto request)
+    {
+        CartItemCount = CartService.TotalItemCount;
+        await InvokeAsync(StateHasChanged);
+        await CartService.AddToCart(request);
+    }
+
+    void IDisposable.Dispose()
+    {
+        CartService.OnButtonClicked -= AddToCart;
+    }
+
+}

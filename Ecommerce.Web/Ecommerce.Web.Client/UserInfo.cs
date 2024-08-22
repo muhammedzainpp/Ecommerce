@@ -7,5 +7,4 @@ public class UserInfo
     public required int UserId { get; set; }
     public required string ApplicationUserId { get; set; }
     public required string Email { get; set; }
-
 }

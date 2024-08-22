@@ -1,8 +1,8 @@
-﻿using Blazored.Toast.Services;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using Ecommerce.Web.Client.Services.Categories;
 using Ecommerce.Web.Client.Services.Categories.Dtos;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
+using Blazored.Toast.Services;
 using Microsoft.JSInterop;
 
 namespace Ecommerce.Web.Client.Shared.Admin.Categories;

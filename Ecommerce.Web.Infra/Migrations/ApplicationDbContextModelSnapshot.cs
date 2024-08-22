@@ -143,7 +143,10 @@ namespace Ecommerce.Web.Infra.Migrations
             modelBuilder.Entity("Ecommerce.Web.Domain.Entities.Base.Cart", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
@@ -160,7 +163,12 @@ namespace Ecommerce.Web.Infra.Migrations
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Carts");
                 });
@@ -508,7 +516,7 @@ namespace Ecommerce.Web.Infra.Migrations
                 {
                     b.HasOne("Ecommerce.Web.Domain.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("Id")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

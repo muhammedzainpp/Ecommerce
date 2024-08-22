@@ -1,6 +1,5 @@
 ﻿@page "/productsbycategory/{CategoryId:int}"
-@implements IDisposable
-@rendermode InteractiveAuto
+@rendermode InteractiveWebAssembly
 <style>
     button {
         background-color: black;
@@ -49,14 +48,22 @@
         <div class="productbody">
             @if (Products is not null)
             {
-                foreach (var product in Products)
+                foreach (var item in Products)
                 {
                     <div class="productinner">
-                        <h5>@product.Name</h5>
-                        <p>@product.Description</p>
+                        <h5>@item.Product.Name</h5>
+                        <p>@item.Product.Description</p>
                         <div class="prdctbuttons">
-                            <button @onclick="async()=>await incrementcount(product.Id)">+</button>
-                            <button @onclick="async()=>await decrementcount(product.Id)">-</button>
+                            @if (item.Quantity is 0)
+                            {
+                                <button @onclick="async()=>await incrementcount(item)">Add To Cart</button>
+                            }
+                            else
+                            {
+                                <button @onclick="async()=>await incrementcount(item)">+</button>
+                                <button>@item.Quantity</button>
+                                <button @onclick="async()=>await decrementcount(item)">-</button>
+                            }
                         </div>
                     </div>
                 }

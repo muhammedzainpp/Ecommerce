@@ -1,11 +1,5 @@
 ﻿using Ecommerce.Web.Domain.ValueObjects;
 using Ecommerce.Web.Shared.Common.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Ecommerce.Web.Application.Common.Extension;
 public static class CostExtensions
 {

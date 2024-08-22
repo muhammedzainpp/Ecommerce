@@ -18,18 +18,16 @@ public partial class Home
         navigationManager.NavigateTo($"subcategories/{categoryId}");
     }
 
-
     public IEnumerable<CategoryDto> Categories { get; set; } = new List<CategoryDto>();  
     protected override async Task OnInitializedAsync()
     {
+        
         var categoriesRes = await Service.GetCategories();
         if (categoriesRes.IsSuccess && categoriesRes.Result is not null)
         {
-
             Categories = categoriesRes.Result;
             Categories.ToList().RemoveAt(0);
             FirstCategory = categoriesRes.Result.First();
-            
         }
     }
 }

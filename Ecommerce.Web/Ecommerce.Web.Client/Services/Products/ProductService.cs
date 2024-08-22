@@ -1,4 +1,5 @@
-﻿using Ecommerce.Web.Client.Services.Products.Dtos;
+﻿using Ecommerce.Web.Client.Services.Carts.Dtos;
+using Ecommerce.Web.Client.Services.Products.Dtos;
 
 namespace Ecommerce.Web.Client.Services.Products;
 
@@ -17,17 +18,17 @@ public class ProductService(IApiService apiservice) : IProductService
     }
     public async Task<ProductDto> GetProduct(int id)
     {
-        var response = await _apiservice.GetById<ProductDto>($"{_baseUrl}/GetById",id);
+        var response = await _apiservice.GetById<ProductDto>($"{_baseUrl}/GetById/{id}");
         return response.Result ?? default!;
     }
 
-    public async Task<IEnumerable<ProductDto>> GetProductsByCategory(int categoryId)
+    public async Task<IEnumerable<GetCartItemDto>> GetProductsByCategory(int categoryId,int userId)
     {
-        var response = await _apiservice.GetById<IEnumerable<ProductDto>>($"{_baseUrl}/GetByCategory",categoryId);
+        var response = await _apiservice.GetById<IEnumerable<GetCartItemDto>>($"{_baseUrl}/GetByCategory/{categoryId}/{userId}");
         if (response != null && response.Result != null)
             return response.Result;
         else
-            throw new Exception();       
+            throw new Exception(response?.Errors?.FirstOrDefault());       
     }
 
 
