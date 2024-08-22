@@ -79,13 +79,13 @@ public class CreateCartCommandHandler : ICommandHandler<CreateCartCommand, int>
                                    .FirstOrDefaultAsync(x => x.CartId == cart.Id && x.ProductId == request.ProductId);
 
         if (cartItem is not null)
-            UpdateCartItem(request, cartItem);
+           await UpdateCartItem(request, cartItem);
         else
             await CreateNewCartItem(cart,request);
 
     }
 
-    public async void UpdateCartItem(CreateCartCommand request, CartItem cartItem)
+    public async Task UpdateCartItem(CreateCartCommand request, CartItem cartItem)
     {
         //var product = await _context
         //    .Products

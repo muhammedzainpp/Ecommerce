@@ -54,7 +54,7 @@ public partial class SaveProduct
 			.ToList();
 		StateHasChanged();
 	}
-	public async void SaveProductAsync()
+	public async Task SaveProductAsync()
 	{
 		Product.Cost.Currency.Symbol = AppSetting.CurrencySymbol;
 		Product.Cost.Currency.Name = AppSetting.CurrencyName;
