@@ -1,5 +1,5 @@
 ﻿@page "/productsbycategory/{CategoryId:int}"
-@rendermode InteractiveWebAssembly
+@rendermode @(new InteractiveAutoRenderMode(prerender: false))
 <style>
     button {
         background-color: black;

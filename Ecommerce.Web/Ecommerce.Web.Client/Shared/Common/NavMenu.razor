@@ -4,7 +4,7 @@
 @using Ecommerce.Web.Client.Services.Carts.Dtos
 @using Ecommerce.Web.Client.Services.Users
 @implements IDisposable
-@rendermode InteractiveAuto
+@rendermode @(new InteractiveAutoRenderMode(prerender: false))
 <!-- Start Top Nav -->
 <nav style="height:auto;padding-top:10px" class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
     <div class="container text-light">

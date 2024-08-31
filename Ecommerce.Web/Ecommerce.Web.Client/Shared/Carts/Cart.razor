@@ -1,7 +1,6 @@
 ﻿@page "/cart"
 @using Ecommerce.Web.Client.Services.Carts
-@rendermode InteractiveAuto
-
+@rendermode @(new InteractiveAutoRenderMode(prerender: false))
 <section class="h-100 gradient-custom">
 
     @if (CartService.TotalItemCount is 0)
@@ -94,13 +93,13 @@
                 <div class="card mb-4 mb-lg-0">
                     <div class="card-body">
                         <p><strong>We accept</strong></p>
-                        <img class="me-2" width="45px"
+                        <img class="me-2" width="45"
                              src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
                              alt="Visa" />
-                        <img class="me-2" width="45px"
+                        <img class="me-2" width="45"
                              src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
                              alt="American Express" />
-                        <img class="me-2" width="45px"
+                        <img class="me-2" width="45"
                              src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
                              alt="Mastercard" />
                     </div>

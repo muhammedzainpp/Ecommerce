@@ -1,5 +1,5 @@
 ﻿@page "/subcategories/{ParentCategoryId:int}"
-@rendermode InteractiveServer
+@rendermode @(new InteractiveAutoRenderMode(prerender: false))
 
 <link href="img/favicon.ico" rel="icon">
 
